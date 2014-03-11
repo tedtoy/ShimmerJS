@@ -1,0 +1,7 @@
+
+
+var Shimmer = (function($){
+
+
+
+}(jQuery));
