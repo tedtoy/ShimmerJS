@@ -2,7 +2,7 @@
 
 var Shimmer = (function(){
 
-    // todo: private variables that are set through instance methods
+    // maybetodo: private variables set through instance methods
 
     return {
         canvas: '',
@@ -103,8 +103,10 @@ var Shimmer = (function(){
         },
         settings: function(dict){
             this.canvas = document.getElementById(dict['canvas']);
-            this.font = dict['font'];
             this.ctx = this.canvas.getContext('2d');
+            this.font = (typeof dict['font'] !== 'undefined' ) 
+                ? dict['font']
+                : this.font;
             this.lightSpread = (typeof dict['lightSpread'] !== 'undefined' ) 
                 ? dict['lightSpread']
                 : this.lightSpread;
