@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/respond.js"></script>
+    <script src="javascripts/shimmer.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -43,10 +44,45 @@
 
 <p>A JavaScript implementation of Facebook's iOS shimmering code at Facebook/Shimmer</p>
 How fast does this update?
+
+        <div style="position:relative; margin-left: 166px; margin-top: 50px; width: 240px; ">
+            <div style="position: absolute; padding: 40px 30px 10px 30px; border: 1px solid #ccc; background-image:url('images/shimmerbg.jpg'); ">
+                <canvas id="shimmer_canvas" height="120" width="250"></canvas>
+            </div>
+        </div>
+
       </section>
 
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
+
+    <script>
+
+        // requestAnim shim layer by Paul Irish
+        window.requestAnimFrame = (function(){
+          return  window.requestAnimationFrame       || 
+                  window.webkitRequestAnimationFrame || 
+                  window.mozRequestAnimationFrame    || 
+                  window.oRequestAnimationFrame      || 
+                  window.msRequestAnimationFrame     || 
+                  function(/* function */ callback, /* DOMElement */ element){
+                    window.setTimeout(callback, 1000 / 60);
+                  };
+        })();
+        Shimmer.settings({
+            'canvas': 'shimmer_canvas',
+            'text' : 'ShimmerJS',
+            'font': '40pt LaneNarrow',
+            'animations': ['slide','slide','slide','glow']
+        });
+        function animate() {
+            requestAnimFrame( animate );
+            Shimmer.on();
+        };
+        animate();
+
+    </script>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
   </body>
 </html>
