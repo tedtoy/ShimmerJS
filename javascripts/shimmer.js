@@ -2,7 +2,7 @@
 
 var Shimmer = (function(){
 
-    // todo: private variables that are set through instance methods
+    // maybetodo: private variables set through instance methods
 
     return {
         canvas: '',
@@ -64,17 +64,17 @@ var Shimmer = (function(){
             }
         }(),
         animateSlide: function(){
-            var gradient = this.ctx.createLinearGradient(0,0,240,0),
+            var gradient = this.ctx.createLinearGradient(0,0,255,0),
                 smartInc = this.inc * (this.diffTime/(1000/60)),
                 lightLeft,
                 lightRight,
                 lightCenter;
-                
             if(this.paused){
                 if((Date.now()-this.pausedTime) > this.pauseInterval){
                     this.lightSource = -0.3; 
                     this.cycleAnimation()
                     this.paused = false;
+                    return undefined;
                 }
             } else {
                 this.lightSource += smartInc;
@@ -84,17 +84,19 @@ var Shimmer = (function(){
                 }
             }
             // lighting positions:
-            lightCenter = (this.lightSource > 1) ? 1 : this.lightSource;
-            if (lightCenter < 0) lightCenter = 0;
+            lightCenter = (this.lightSource > 1) 
+                ? 1 
+                : this.lightSource;
+                if (lightCenter < 0) lightCenter = 0;
             lightLeft = ((this.lightSource - this.lightSpread) < 0) 
                 ? 0 
                 : this.lightSource - this.lightSpread;
-            if (lightLeft > 1) lightLeft = 1;
+                if (lightLeft > 1) lightLeft = 1;
             lightRight = (this.lightSource + this.lightSpread) > 1 
                 ? 1 
                 : this.lightSource + this.lightSpread; 
-            if (lightRight < 0) lightRight = 0;
-            
+                if (lightRight < 0) lightRight = 0;
+
             gradient.addColorStop(lightLeft,"#555");
             gradient.addColorStop(lightCenter,"#ffffff");
             gradient.addColorStop(lightRight,"#555");
@@ -103,8 +105,10 @@ var Shimmer = (function(){
         },
         settings: function(dict){
             this.canvas = document.getElementById(dict['canvas']);
-            this.font = dict['font'];
             this.ctx = this.canvas.getContext('2d');
+            this.font = (typeof dict['font'] !== 'undefined' ) 
+                ? dict['font']
+                : this.font;
             this.lightSpread = (typeof dict['lightSpread'] !== 'undefined' ) 
                 ? dict['lightSpread']
                 : this.lightSpread;
@@ -125,7 +129,7 @@ var Shimmer = (function(){
             this.ctx.clearRect(0,0,255,150);
             this.ctx.font = this.font;
             this.ctx.fillStyle = this.animate();  
-            this.ctx.fillText(this.text, 0, 60);
+            this.ctx.fillText(this.text, 0, 55);
         }
     }
 }());
