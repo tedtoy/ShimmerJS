@@ -1,16 +1,13 @@
 
 
 var Shimmer = (function(){
-    var canvas = document.getElementById("shimmer");
-    var ctx = canvas.getContext('2d');
-    ctx.font = "36pt Helvetica";
-    var lightSource = 0, 
-        lightLeft, 
-        lightCenter, 
-        lightRight, 
-        spread = 0.28, 
-        correctedInc;
+
+    // todo: private variables that are set through instance methods
+
     return {
+        canvas: '',
+        ctx: undefined,
+        font: "30pt Helvetica",
         currTime: Date.now(),
         diffTime: 0,
         spread: 0,
@@ -20,7 +17,6 @@ var Shimmer = (function(){
         lightSource: 0,
         inc: 0.032,
         lightSpread: 0.55,
-        font: "30pt Helvetica",
         animations: ['slide','slide','slide','glow'],
         currentAnimationIndex: 0,
         keepTime: function(){
@@ -44,11 +40,11 @@ var Shimmer = (function(){
             }
         },
         animateGlow: function(){
-            var glowEnd = 255; 
-            var rgbStart = 68;
-            var r = g = b = rgbStart;
-            var increment = 10;
-            var interval = 800;
+            var glowEnd = 255, 
+                rgbStart = 68,
+                r = g = b = rgbStart,
+                increment = 10,
+                interval = 800;
             return function(){
                 var smartInc = increment * (this.diffTime/(1000/60));
                 if(this.paused){
@@ -58,7 +54,7 @@ var Shimmer = (function(){
                         this.paused = false;
                     }
                 } else {
-                    r =  parseInt(r + smartInc);
+                    r = parseInt(r + smartInc);
                     if(r>=glowEnd){
                         this.paused = true;
                         this.pausedTime = Date.now()
@@ -68,7 +64,7 @@ var Shimmer = (function(){
             }
         }(),
         animateSlide: function(){
-            var gradient = ctx.createLinearGradient(0,0,240,0),
+            var gradient = this.ctx.createLinearGradient(0,0,240,0),
                 smartInc = this.inc * (this.diffTime/(1000/60)),
                 lightLeft,
                 lightRight,
@@ -105,15 +101,31 @@ var Shimmer = (function(){
 
             return gradient;
         },
+        settings: function(dict){
+            this.canvas = document.getElementById(dict['canvas']);
+            this.font = dict['font'];
+            this.ctx = this.canvas.getContext('2d');
+            this.lightSpread = (typeof dict['lightSpread'] !== 'undefined' ) 
+                ? dict['lightSpread']
+                : this.lightSpread;
+            this.inc = (typeof dict['inc'] !== 'undefined' ) 
+                ? dict['inc']
+                : this.inc;
+            this.animations = (typeof dict['animations'] !== 'undefined' ) 
+                ? dict['animations']
+                : this.animations;
+            this.text = (typeof dict['text'] !== 'undefined' ) 
+                ? dict['text']
+                : this.text;
+        },
         on: function(){
-
+            // record the time we ran:
             this.keepTime();
-
-            ctx.clearRect(0,0,250,150);
-            ctx.fillStyle = this.animate();  
-            ctx.fillText("Shimmer", 10, 40);
-            //ctx.font = "20pt arial";
-            ctx.fillText(this.currTime, 10, 85);
+            // clear and fill the canvas:
+            this.ctx.clearRect(0,0,250,150);
+            this.ctx.font = this.font;
+            this.ctx.fillStyle = this.animate();  
+            this.ctx.fillText(this.text, 0, 40);
         }
     }
 }());
