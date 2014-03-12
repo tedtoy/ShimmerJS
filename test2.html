@@ -1,8 +1,9 @@
+
 <style>
     /* styles */
     body {
         font-family: Helvetica;
-    }
+    } 
 </style>
 
 <div style="">
@@ -11,8 +12,16 @@
         <div style="margin: 20px 0px;">
             Shimmer in Canvas
         </div>
-        <div style="position: absolute; padding: 40px 30px 10px 30px; border: 1px solid #ccc; background-color: green; ">
+        <div style="position: absolute; padding: 40px 30px 10px 30px; border: 1px solid #ccc; background-image:url('shimmer.jpg'); ">
             <canvas id="shimmer" height="120" width="250"></canvas>
+        </div>
+    </div>
+    <div style="position:relative; margin: 20px; margin-top:150px; padding: 20px; width: 240px;">
+        <div style="margin: 20px 0px;">
+            Shimmer in Canvas 2
+        </div>
+        <div style="position: absolute; padding: 40px 30px 10px 30px; border: 1px solid #ccc; background-image:url('shimmer.jpg'); ">
+            <canvas id="shimmer2" height="120" width="250"></canvas>
         </div>
     </div>
 </div>
@@ -21,6 +30,14 @@
 <script src="shimmer.js" type="text/javascript"></script>
 
 <script>
+    // Crockfords create shim:
+    if (typeof Object.create !== 'function') {
+        Object.create = function (o) {
+            function F() {}
+            F.prototype = o;
+            return new F();
+        };
+    }
     // requestAnim shim layer by Paul Irish
     window.requestAnimFrame = (function(){
       return  window.requestAnimationFrame       || 
@@ -32,14 +49,29 @@
                 window.setTimeout(callback, 1000 / 60);
               };
     })();
+    Shimmer2 = Object.create(Shimmer);
+    Shimmer.settings({
+        'canvas': 'shimmer',
+        'text' : 'Shimmer',
+        'font': '36pt Helvetica',
+        'animations': ['slide','slide','slide','glow']
+    });
     function animate() {
         requestAnimFrame( animate );
         Shimmer.on();
-        Shimmer.animations=['glow','slide','glow'];
-        Shimmer.inc = .09;
-
     };
     animate();
-</script>
 
+    Shimmer2.settings({
+        'canvas': 'shimmer2',
+        'text' : 'Shimmerasdfdsaf',
+        'font': '36pt Helvetica',
+        'animations': ['glow','slide','glow']
+    });
+    (function animate2(){
+        requestAnimFrame( animate2 );
+        Shimmer2.on();
+
+    }());
+</script>
 
