@@ -1,9 +1,8 @@
-
 <style>
     /* styles */
     body {
         font-family: Helvetica;
-    } 
+    }
 </style>
 
 <div style="">
@@ -12,7 +11,7 @@
         <div style="margin: 20px 0px;">
             Shimmer in Canvas
         </div>
-        <div style="position: absolute; padding: 40px 30px 10px 30px; border: 1px solid #ccc; background-image:url('shimmer.jpg'); ">
+        <div style="position: absolute; padding: 40px 30px 10px 30px; border: 1px solid #ccc; background-color: green; ">
             <canvas id="shimmer" height="120" width="250"></canvas>
         </div>
     </div>
@@ -36,7 +35,11 @@
     function animate() {
         requestAnimFrame( animate );
         Shimmer.on();
+        Shimmer.animations=['glow','slide','glow'];
+        Shimmer.inc = .09;
+
     };
     animate();
 </script>
+
 
