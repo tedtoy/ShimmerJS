@@ -122,7 +122,7 @@ var Shimmer = (function(){
             // record the time we ran:
             this.keepTime();
             // clear and fill the canvas:
-            this.ctx.clearRect(0,0,250,150);
+            this.ctx.clearRect(0,0,255,150);
             this.ctx.font = this.font;
             this.ctx.fillStyle = this.animate();  
             this.ctx.fillText(this.text, 0, 60);
