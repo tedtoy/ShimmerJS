@@ -20,8 +20,10 @@
         Shimmer in Canvas
     </div>
 
-    <div style="margin: 40px; padding: 40px; border: 1px solid #ccc; width: 240px;">
-        <canvas id="shimmer" height="150" width="250"></canvas>
+    <div style="position:relative; margin: 40px; padding: 40px; width: 240px;">
+        <div style="position: absolute; padding: 50px 30px 10px 30px; border: 1px solid #ccc; background-image:url('shimmer.jpg'); ">
+            <canvas id="shimmer" height="150" width="250"></canvas>
+        </div>
     </div>
 </div>
 
@@ -58,26 +60,72 @@
             pausedTime: 0,
             pauseInterval: 850,
             lightSource: 0,
-            inc: 0.015,
+            inc: 0.032,
+            lightSpread: 0.45,
+            animations: ['slide','slide','slide','glow'],
+            currentAnimationIndex: 0,
             keepTime: function(){
                 this.diffTime = Date.now() - this.currTime;
                 this.currTime = Date.now();
             },
-            letThereBeLight: function(){
-                var gradient = ctx.createLinearGradient(0,0,240,0);
-                var smartInc = this.inc * (this.diffTime/(1000/60));
+            cycleAnimation: function(){
+                this.currentAnimationIndex+=1;
+                if(this.currentAnimationIndex >= this.animations.length){
+                    this.currentAnimationIndex = 0;
+                } 
+            },
+            animate: function(){
+                var currentAnimation = this.animations[this.currentAnimationIndex];
+                if(currentAnimation === 'glow'){
+                    return this.animateGlow(); // return glow style
+                } else if (currentAnimation === 'slide'){
+                    return this.animateSlide(); // return slide gradient
+                } else {
+                    console.log("unknown animation type: "+String(currentAnimation));
+                }
+            },
+            animateGlow: function(){
+                console.log('glow!');
+                var glowEnd = 255; 
+                var r = g = b = 68;
+                return function(){
+                    console.log("glow inner");    
+                    return "rgb("+ r + "," + r + "," + r + ")";
+                }
+            }(),
+            animateSlide: function(){
                 
-                this.lightSource += smartInc;
+                var gradient = ctx.createLinearGradient(0,0,240,0),
+                    smartInc = this.inc * (this.diffTime/(1000/60)),
+                    lightLeft,
+                    lightRight,
+                    lightCenter;
+                    
+                if(this.paused){
+                    if((Date.now()-this.pausedTime) > this.pauseInterval){
+                        this.paused = false;
+                        this.lightSource = -0.3; 
+                        this.lightCycle = 0;
+                    }
+                } else {
+                    this.lightSource += smartInc;
+                    if(this.lightSource > (1+this.lightSpread)){ 
+                        this.paused = true;
+                        this.pausedTime = Date.now();
+                        this.cycleAnimation()
+                    }
+                }
+                // lighting positions:
                 lightCenter = (this.lightSource > 1) ? 1 : this.lightSource;
                 if (lightCenter < 0) lightCenter = 0;
-                lightLeft = ((this.lightSource - spread) < 0) ? 0 : this.lightSource - spread;
+                lightLeft = ((this.lightSource - this.lightSpread) < 0) ? 0 : this.lightSource - this.lightSpread;
                 if (lightLeft > 1) lightLeft = 1;
-                lightRight = (this.lightSource + spread) > 1 ? 1 : this.lightSource + spread; 
+                lightRight = (this.lightSource + this.lightSpread) > 1 ? 1 : this.lightSource + this.lightSpread; 
                 if (lightRight < 0) lightRight = 0;
-
-                gradient.addColorStop(lightLeft,"gray");
-                gradient.addColorStop(lightCenter,"white");
-                gradient.addColorStop(lightRight,"gray");
+                
+                gradient.addColorStop(lightLeft,"#444");
+                gradient.addColorStop(lightCenter,"#ffffff");
+                gradient.addColorStop(lightRight,"#444");
 
                 return gradient;
             },
@@ -85,23 +133,11 @@
 
                 this.keepTime();
 
-                if(this.lightSource > 1.3){ 
-                    this.lightSource = -0.3; 
-                    this.paused = true;
-                    this.pausedTime = Date.now();
-                }
-                if(this.paused){
-                    if((Date.now()-this.pausedTime) > this.pauseInterval){
-                        this.paused = false;
-                    }
-                } else {
-
-                    ctx.clearRect(0,0,240,120);
-                    ctx.fillStyle = this.letThereBeLight();  
-                    ctx.fillText("Shimmer", 10, 20);
-                    ctx.fillText(this.currTime, 10, 45);
-                    ctx.fillText(this.diffTime, 180, 75);
-                }
+                ctx.clearRect(0,0,240,120);
+                ctx.fillStyle = this.animate();  
+                ctx.fillText("Shimmer", 10, 20);
+                ctx.fillText(this.currTime, 10, 45);
+                ctx.fillText(this.diffTime, 175, 75);
             }
         }
     }())
@@ -113,26 +149,4 @@
 
     animate();
 
-
-
-
-/*
-    if(canvas.getContext){
-        var context = canvas.getContext('2d');
-        context.font = "20pt Arial";
-        context.fillText("Shimmer", 10, 20);
-        setTimeout(function(){
-            context.clearRect(0,0,100,120);
-            var gradient=context.createLinearGradient(0,0,50,0);
-            gradient.addColorStop("0","magenta");
-            gradient.addColorStop("0.5","blue");
-            gradient.addColorStop("1.0","red");
-            // Fill with gradient
-            context.fillStyle=gradient;  
-            context.fillText("testasdfsafdasf", 5, 30);
-        }, 1000);
-    } else {
-        console.log("Go get yourself a real browser");
-    }
-*/
 </script>
