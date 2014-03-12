@@ -125,7 +125,7 @@ var Shimmer = (function(){
             this.ctx.clearRect(0,0,250,150);
             this.ctx.font = this.font;
             this.ctx.fillStyle = this.animate();  
-            this.ctx.fillText(this.text, 0, 40);
+            this.ctx.fillText(this.text, 0, 60);
         }
     }
 }());

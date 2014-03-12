@@ -4,6 +4,11 @@
     body {
         font-family: Helvetica;
     } 
+
+    @font-face {
+        font-family: 'LaneNarrow';
+        src: url('fonts/LANENAR_.ttf');
+    }    
 </style>
 
 <div style="">
@@ -37,7 +42,7 @@
     Shimmer.settings({
         'canvas': 'shimmer',
         'text' : 'ShimmerJS',
-        'font': '36pt Helvetica',
+        'font': '40pt LaneNarrow',
         'animations': ['slide','slide','slide','glow']
     });
     function animate() {
