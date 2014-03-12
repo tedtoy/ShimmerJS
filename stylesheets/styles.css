@@ -68,6 +68,12 @@
   -webkit-font-smoothing: antialiased;
 }
 
+@font-face {
+  font-family: 'LaneNarrow';
+  src: url("../fonts/LANENAR_.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
 /* normalize.css 2012-02-07T12:37 UTC - http://github.com/necolas/normalize.css */
 /* =============================================================================
    HTML5 display definitions
