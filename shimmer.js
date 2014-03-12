@@ -64,17 +64,17 @@ var Shimmer = (function(){
             }
         }(),
         animateSlide: function(){
-            var gradient = this.ctx.createLinearGradient(0,0,240,0),
+            var gradient = this.ctx.createLinearGradient(0,0,255,0),
                 smartInc = this.inc * (this.diffTime/(1000/60)),
                 lightLeft,
                 lightRight,
                 lightCenter;
-                
             if(this.paused){
                 if((Date.now()-this.pausedTime) > this.pauseInterval){
                     this.lightSource = -0.3; 
                     this.cycleAnimation()
                     this.paused = false;
+                    return undefined;
                 }
             } else {
                 this.lightSource += smartInc;
@@ -84,17 +84,19 @@ var Shimmer = (function(){
                 }
             }
             // lighting positions:
-            lightCenter = (this.lightSource > 1) ? 1 : this.lightSource;
-            if (lightCenter < 0) lightCenter = 0;
+            lightCenter = (this.lightSource > 1) 
+                ? 1 
+                : this.lightSource;
+                if (lightCenter < 0) lightCenter = 0;
             lightLeft = ((this.lightSource - this.lightSpread) < 0) 
                 ? 0 
                 : this.lightSource - this.lightSpread;
-            if (lightLeft > 1) lightLeft = 1;
+                if (lightLeft > 1) lightLeft = 1;
             lightRight = (this.lightSource + this.lightSpread) > 1 
                 ? 1 
                 : this.lightSource + this.lightSpread; 
-            if (lightRight < 0) lightRight = 0;
-            
+                if (lightRight < 0) lightRight = 0;
+
             gradient.addColorStop(lightLeft,"#555");
             gradient.addColorStop(lightCenter,"#ffffff");
             gradient.addColorStop(lightRight,"#555");
@@ -124,10 +126,10 @@ var Shimmer = (function(){
             // record the time we ran:
             this.keepTime();
             // clear and fill the canvas:
-            this.ctx.clearRect(0,0,250,150);
+            this.ctx.clearRect(0,0,255,150);
             this.ctx.font = this.font;
             this.ctx.fillStyle = this.animate();  
-            this.ctx.fillText(this.text, 0, 60);
+            this.ctx.fillText(this.text, 0, 55);
         }
     }
 }());
