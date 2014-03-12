@@ -95,9 +95,9 @@ var Shimmer = (function(){
                 : this.lightSource + this.lightSpread; 
             if (lightRight < 0) lightRight = 0;
             
-            gradient.addColorStop(lightLeft,"#333");
+            gradient.addColorStop(lightLeft,"#555");
             gradient.addColorStop(lightCenter,"#ffffff");
-            gradient.addColorStop(lightRight,"#333");
+            gradient.addColorStop(lightRight,"#555");
 
             return gradient;
         },
