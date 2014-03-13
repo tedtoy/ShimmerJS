@@ -47,7 +47,7 @@ The glow is simply accomplished by adding a white rgb(r,g,b) fillStyle to the co
 The animations are stored in an array and a cycleAnimation() is called by the slide and glow functions when they are done with their current animation.
 
 ### What else can it do?
-You can set properties on the shimmer object directly in order to change the text, font size and style, speed of the sliding animation, the sequence of animations (default: slide, slide slide, glow), and the spead of the sliding light source. This could be extended to be more useable with setter functions (easy), ability to add different types of animations (hard), change the colors of the gradients or maybe even reverse the direction of the animation (easy).
+You can set properties on the shimmer object directly in order to change the text, font size and style, speed of the sliding animation, the sequence of animations (default: slide, slide slide, glow), and the spead of the sliding light source. This could be extended to be more useable with setter functions (easy), ability to add different types of animations (hard), change size of canvas, change the colors of the gradients or maybe even reverse the direction of the animation (easy).
 
 ### Anything else
 Yes, the @font-face property is in a sorry state and isn't guaranteed to work in web-kit. Just makes it harder to use cool fonts.
